@@ -40,8 +40,8 @@ function makeGrid (array) {
   return ul;
 }
 
-function getClassFromCard (array) {
-  return array[i].className;
+function getClassFromCard (currentCard) {
+  return currentCard.className;
 }
 
 document.getElementById('deck').appendChild(makeGrid(cardList));
@@ -66,27 +66,44 @@ deckDOM.addEventListener("click", function onCardClick (evt) {
     if (evt.target.className === "card") {
       evt.target.className += ' show open';
       openCard.push(evt.target.firstChild);
+    }
+  }
+   if (openCard.length === 2 ) {
+     if (getClassFromCard (openCard[0]) !== getClassFromCard(openCard[1])) {
+       if (evt.target.className === "card show open") {
+         for (var i = 0; i < openCard.length; i++) {
+           openCard[i].parentElement.className -= (' show open')
+         }
+         openCard = [];
+       }
+
+       if (getClassFromCard (openCard[0]) === getClassFromCard(openCard[1])) {
+         if (evt.target.className === "card show open") {
+           for (var i = 0; i < openCard.length; i++) {
+             openCard[i].parentElement.className += (' match');
+           }
+         }
+      openCard = [];
+      }
 
     }
-  }
-  else if (openCard === 2 ) {
-    if (getClassFromCard (openCard[0]) === getClassFromCard(openCard[1])) {
-      if (evt.target.className === "card") {
-        evt.target.className += ' match';
-      }
-    }
-  }
   incrementMove();
-  console.log(openCard);/*--------onlycheck---------*/
-  console.log(getClassFromCard());
+  }
 });
 
 
 
+/*what when they dont match
+if (getClassFromCard (openCard[0]) !== getClassFromCard(openCard[1])) {
+  if (evt.target.className === "card show open") {
+    for (var i = 0; i < openCard.length; i++) {
+      openCard[i].parentElement.className = (' card')
+    }
 
+    openCard = [];
+  }
 
-
-
+*/
 
 
 /*if (getClassFromCard(openCard[0]) === getClassFromCard(openCard[1])) {
