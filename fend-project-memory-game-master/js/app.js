@@ -60,23 +60,21 @@ function reduceStar(){
     let stars = $(".fa-star");
     $(stars[stars.length-1]).toggleClass("fa-star fa-star-o");
   }
-
-deckDOM.addEventListener("click", function onCardClick (evt) {
-  if (openCard.length < 2 ){
-    if (evt.target.className === "card") {
-      evt.target.className += ' show open';
-      openCard.push(evt.target.firstChild);
-    }
-  }
-   if (openCard.length === 2 ) {
-     if (getClassFromCard (openCard[0]) !== getClassFromCard(openCard[1])) {
-       if (evt.target.className === "card show open") {
-         for (var i = 0; i < openCard.length; i++) {
-           openCard[i].parentElement.className -= (' show open')
-         }
-         openCard = [];
+function setTime (openCard) {
+    for (var i = 0; i < openCard.length; i++) {
+      openCard[i].parentElement.className = ('card')
        }
+       console.log("fhdskjfhkjds");/*--------1and2-OnlyForCheck---------*/
+     }
 
+  deckDOM.addEventListener("click", function onCardClick (evt) {
+    if (openCard.length < 2 ){
+      if (evt.target.className === "card") {
+        evt.target.className += ' show open';
+        openCard.push(evt.target.firstChild);
+      }
+    }
+     if (openCard.length === 2 ) {
        if (getClassFromCard (openCard[0]) === getClassFromCard(openCard[1])) {
          if (evt.target.className === "card show open") {
            for (var i = 0; i < openCard.length; i++) {
@@ -84,13 +82,24 @@ deckDOM.addEventListener("click", function onCardClick (evt) {
            }
          }
       openCard = [];
+
       }
-
     }
-  incrementMove();
-  }
-});
+    if (openCard.length === 2 ) {
+       if (getClassFromCard (openCard[0]) !== getClassFromCard(openCard[1])) {
+         if (evt.target.className === "card show open") {
+           for (var i = 0; i < openCard.length; i++) {
+             openCard[i].parentElement.className = ('card show open')
+           }
+           setTimeout(setTime(openCard), 5000);
+         }
 
+         openCard = [];
+
+      }
+    }
+    incrementMove();
+  });
 
 
 /*what when they dont match
