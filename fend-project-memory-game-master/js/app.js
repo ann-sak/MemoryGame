@@ -64,7 +64,7 @@ function setTime (openCard) {
     for (var i = 0; i < openCard.length; i++) {
       openCard[i].parentElement.className = ('card')
        }
-       console.log("fhdskjfhkjds");/*--------1and2-OnlyForCheck---------*/
+       console.log("fhdskjfhkjds");/*--------OnlyForCheck---------*/
      }
 
   deckDOM.addEventListener("click", function onCardClick (evt) {
@@ -91,12 +91,13 @@ function setTime (openCard) {
            for (var i = 0; i < openCard.length; i++) {
              openCard[i].parentElement.className = ('card show open')
            }
-           setTimeout(setTime(openCard), 5000);
+           setTimeout(setTime, 500, openCard);
          }
 
          openCard = [];
 
       }
+
     }
     incrementMove();
   });
