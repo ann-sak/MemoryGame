@@ -1,7 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
-/*const items = document.querySelector("");*/
 const cardList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
 
 
@@ -9,10 +5,8 @@ let openCard = [];
 let solvedCount = 0;
 let moves = 0;
 let timeCount = 0;
-let stars = $(".fa-star");
 
-
-
+// Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
     while (currentIndex !== 0) {
@@ -29,6 +23,7 @@ shuffle(cardList);
 
 let shuffledArray = [shuffle(cardList)];
 
+//makes grid by adding DOM elements
 function makeGrid (array) {
   let ul = document.createElement("ul");
   ul.className += ("deck");
@@ -43,6 +38,7 @@ function makeGrid (array) {
   return ul;
 }
 
+//get cards classess
 function getClassFromCard (currentCard) {
   return currentCard.className;
 }
@@ -50,7 +46,7 @@ function getClassFromCard (currentCard) {
 document.getElementById("deck").appendChild(makeGrid(cardList));
 
 
-
+// increment move count
 function incrementMove(){
     moves += 1;
     $("#moves").html(moves);
@@ -58,18 +54,22 @@ function incrementMove(){
         reduceStar();
     }
 
+// reduce star rating
+let whiteStars = 3;
 function reduceStar(){
-
+    const stars = $(".fa-star");
     $(stars[stars.length-1]).toggleClass("fa-star fa-star-o");
+    whiteStars--;
   }
 
+//set delay of closing the cards which didn't match
 function setTimeOfDelay (openCard) {
     for (let i = 0; i < openCard.length; i++) {
       openCard[i].parentElement.className = ("card")
        }
 }
 
-
+// starts the timer
 function startTimer(){
     timeCount += 1;
     $("#timer").html(timeCount);
@@ -79,28 +79,19 @@ function startTimer(){
 const card = document.querySelector(".card");
 const deckDOM = document.querySelector(".deck");
 
-
-function cardMatch (openCard) {
-
-  for (let i = 0; i < openCard.length; i++) {
-    openCard[i].parentElement.animateCss("tada", function(){
-      openCard[i].parentElement.className = ("card match");
-    });
-  }
-}
-
-
-
+//main event Listener
   deckDOM.addEventListener("click", function onCardClick (evt) {
     if (timeCount === 0) {
       startTimer();
     }
+    //shows items
     if (openCard.length < 2 ){
       if (evt.target.className === "card") {
         evt.target.className += " show open";
         openCard.push(evt.target.firstChild);
       }
     }
+    //match the two identical cards
     if (openCard.length === 2 ) {
        if (getClassFromCard (openCard[0]) === getClassFromCard(openCard[1])) {
          if (evt.target.className === "card show open") {
@@ -113,6 +104,7 @@ function cardMatch (openCard) {
       solvedCount++;
       }
     }
+    //close the cards which didn't match
     if (openCard.length === 2 ) {
        if (getClassFromCard (openCard[0]) !== getClassFromCard(openCard[1])) {
          if (evt.target.className === "card show open") {
@@ -125,11 +117,13 @@ function cardMatch (openCard) {
       }
       incrementMove();
     }
+    //ends game when every card is matched
     if (solvedCount === 8 ) {
       endGame();
     }
 });
 
+//ends game
 function endGame () {
   clearTimeout(timerPtr);
   const modal = document.getElementById("myModal");
@@ -137,11 +131,15 @@ function endGame () {
   const again = document.getElementsByClassName("play-again")[0];
   const text = document.getElementsByClassName("modal-text");
 
+  //shows modal
   modal.style.display = "block";
-  $(".modal-text").html("Congratulation! You have won the game in " + timeCount +  " seconds with " + stars.length + " moves. Do you want to play again?");
+  $(".modal-text").html("Congratulation! You have won the game in " + timeCount +  " seconds with " + whiteStars + "  /3 star rating. Do you want to play again?");
+
+  //close the modal
   close.onclick = function() {
     modal.style.display = "none";
   }
+  //close the modal and restart the game
   again.onclick = function() {
       shuffle(cardList);
       solvedCount = 0;
@@ -150,19 +148,20 @@ function endGame () {
       $(".fa.fa-star-o").toggleClass("fa-star fa-star-o");
       openCard = [];
       moves = 0;
+      whiteStars = 3;
       $("#moves").html(moves);
       let stars = $(".fa-star");
       clearTimeout(timerPtr);
       timeCount = 0;
       $("#timer").html(0);
       modal.style.display = "none";
-      shuffledArray = [shuffle(cardList)];
+      location.reload();
   }
 
 }
 
   const restart = document.querySelector("#restart");
-
+  //restart the game
   restart.addEventListener("click", function restart (evt) {
     shuffle(cardList);
     solvedCount = 0;
@@ -171,12 +170,13 @@ function endGame () {
     $(".fa.fa-star-o").toggleClass("fa-star fa-star-o");
     openCard = [];
     moves = 0;
+    whiteStars = 3;
     $("#moves").html(moves);
     let stars = $(".fa-star");
     clearTimeout(timerPtr);
     timeCount = 0;
     $("#timer").html(0);
-    shuffledArray = [shuffle(cardList)];
+    location.reload();
 
   });
 
