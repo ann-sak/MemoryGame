@@ -140,7 +140,7 @@ function endGame () {
     modal.style.display = "none";
   }
   //close the modal and restart the game
-  again.onclick = function() {
+    again.onclick = function() {
       shuffle(cardList);
       solvedCount = 0;
       $(".card.show.open.match").toggleClass("show open match");
